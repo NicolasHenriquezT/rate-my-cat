@@ -81,7 +81,7 @@ public class CatService {
     public List<Cat> getAllCats() {
         return catRepository.findAll();
     }
-
+ 
     public List<Opinion> getOpinions(Cat cat) {
         Optional<Cat> optionalCat = catRepository.findById(cat.getId());
         if (!optionalCat.isPresent()) {
@@ -90,4 +90,15 @@ public class CatService {
         return optionalCat.get().getOpinions();
     }
 
+    /*---------------------------------------------------------*/
+    
+    public String findName(long idGato) {
+        Optional<Cat> gato = catRepository.findById(idGato);
+        return gato.get().getName();
+    }
+
+    public String findPicture(Cat gato) {
+        Optional<Cat> gato2 = catRepository.findById(gato.getId());
+        return gato2.get().getPictureFileName();
+    }
 }

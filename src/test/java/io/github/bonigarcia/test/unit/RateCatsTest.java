@@ -19,6 +19,7 @@ package io.github.bonigarcia.test.unit;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.text.IsEmptyString.emptyString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -53,9 +54,24 @@ class RateCatsTest {
 
     // Test data
     Cat dummy = new Cat("dummy", "dummy.png");
+    Cat gatoTest = new Cat("gatoTest", "fotoTest.png");   //nuevo
+    Cat gatoTest1 = new Cat("gatoTest1", "fotoTest1.png"); //nuevo
+    Cat gatoTest2 = new Cat("gatoTest2", "fotoTest2.png"); //nuevo
+    
+    List<Cat> listaGatos;
+
+    @BeforeAll
+    public void funcion(){
+        this.listaGatos.add(dummy);
+        this.listaGatos.add(gatoTest);
+        this.listaGatos.add(gatoTest1);
+        this.listaGatos.add(gatoTest2);
+    }
+    
+    
     int stars = 5;
     String comment = "foo";
-
+    
     @ParameterizedTest(name = "Rating cat with {0} stars")
     @ValueSource(doubles = { 0.5, 5 })
     @DisplayName("Correct range of stars test")
@@ -99,4 +115,36 @@ class RateCatsTest {
                 emptyString());
     }
 
+    /*--------------------------------*/
+
+    
+    @Test
+    @DisplayName("Test nombre correcto gato")
+    @Tag("functional-requirement-5")
+    void testCorrectCatName() {
+        when(catRepository.findById(any(Long.class)))
+            .thenReturn(Optional.of(gatoTest));
+        String gato1 = catService.findName(10);
+        assertEquals("gatoTest", gato1);   
+    }
+
+    @Test
+    @DisplayName("Test foto correcta gato")
+    @Tag("functional-requirement-6")
+    void testCorrectPictureName() {
+        when(catRepository.findById(any(Long.class)))
+            .thenReturn(Optional.of(gatoTest));
+        String gato2 = catService.findPicture(gatoTest);
+        assertEquals("fotoTest.png", gato2);   
+    } 
+
+    @Test
+    @DisplayName("Test tamaño correcto de lista de gatos")
+    @Tag("functional-requirement-7")
+    void testCorrectSize() {
+        when(catRepository.findAll())
+            .thenReturn(listaGatos);
+        assertEquals(2, catService.getCatCount());
+    }
 }
+ 
